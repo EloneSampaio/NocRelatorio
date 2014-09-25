@@ -1,4 +1,5 @@
-<div class="row-fluid">
+
+<div class="row-fluid" id="cliente">
     <!-- block -->
     <div class="block">
         <div class="navbar navbar-inner block-header">
@@ -8,55 +9,54 @@
             <div class="span12">
                 <div class="table-toolbar">
                     <div class="btn-group">
-                        <a href="<?php print URL; ?>pagamento/novo"><button class="btn btn-success">Novo Pagamento <i class="icon-plus icon-white"></i></button></a>
+                        <a href="<?php print URL; ?>coyonet_hpas/novo"><button class="btn btn-success" id="">Adiconar Novo <i class="icon-plus icon-white"></i></button></a>
                     </div>
-                    <div class="btn-group pull-right">
-                        <button data-toggle="dropdown" class="btn dropdown-toggle">Opções <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Imprimir</a></li>
-                            <li><a href="#">Salvar PDF</a></li>
-                            <li><a href="#">Exportar para Excel</a></li>
-                        </ul>
-                    </div>
+
                 </div>
 
                 <table  class="table table-striped table-bordered">   
                     <thead>
                         <tr>
-                            <th>Nome</th> 
-                            <th>Mes</th>
-                            <th>Data</th>
-                            <th>Codigo</th>
-                            <th>Factura</th>
+
+                            <th>status</th> 
+                            <th>amp</th>
+                            <th>power</th>
+                            <th>tube_temp</th>
+                            <th>Alterar</th>
+                            <!-- <th>Apagar</th> --->
+                            <th>Ver Usuario</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        <?php if (isset($this->pagamentos) && !empty($this->pagamentos)): ?>
-                            <?php foreach ($this->pagamentos as $valor): ?>
+                        <?php if (isset($this->clientes) && !empty($this->clientes)): ?>
+                            <?php foreach ($this->clientes as $dados): ?>
 
                                 <tr>
-                                    <td><?php print $valor['nome']; ?></td>
-                                    <td><?php print $valor['mes']; ?></td>
-                                    <td><?php print $valor['data']; ?></td>
-                                    <td><?php print $valor['codigo']; ?></td>
-                                    <td><a rel="<?php print $valor['id_cliente']; ?>" href="<?php print URL . "pdf/factura/" . $valor['mes']."/".$valor['id_cliente'] ?>" id="contrato"><i class="">Imprimir</i></a></td>
-
+                                    <td><?php print $dados['status']; ?></td>
+                                    <td><?php print $dados['amp']; ?></td>
+                                    <td><?php print $dados['power']; ?></td>
+                                    <td><?php print $dados['tube_temp']; ?></td>
+                                    
+                                    <td><a rel="<?php print $dados['id']; ?>" href="<?php print URL . "alarmencc/editar/" . $dados['id']; ?>" id="altera"><i class="">Alterar</i></a></td>
+                                    <!---- <td><a rel="<?php $dados['id']; ?>" href="<?php URL . "alarmencc/apagar/" . $dados['id']; ?>" id="delete"><i class="">Apagar</i></a></td>  ---->
+                                    <td><a rel="<?php print $dados['id']; ?>" href="<?php print URL . "alarmencc/listar/" . $dados['id']; ?>" id="contrato"><i class="">Ver</i></a></td>
                                 </tr>
                             <?php endforeach; ?>
 
                         </tbody>
                     </table>
                 <?php else: ?>
-                    <h2 class="text-center">Não Foi efectuado nenhum pagamento</h2>
+                    <h2 class="text-center alert-error">Não existe nenhuma cliente cadastrado</h2>
                 <?php endif; ?>
 
-
-                <?php if (isset($this->paginacion) && !empty($this->paginacion)) echo $this->paginacion; ?>
+                <?php if (isset($this->paginacion) && !empty($this->paginacion) && (count($this->paginacion))) echo $this->paginacion; ?>
 
             </div>
         </div>
     </div>
     <!-- /block -->
+</div>
+</div>
 </div>
 <hr>

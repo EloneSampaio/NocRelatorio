@@ -30,7 +30,7 @@ class Zap_filmesController extends Controller {
         }
 
 
-        $this->getBibliotecas('paginador');
+       $this->getBibliotecas('paginador','paginador');
         $paginador = new Paginador();
 
         $this->view->titulo = "Clientes Cadastrado";

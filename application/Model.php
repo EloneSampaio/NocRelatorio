@@ -15,7 +15,8 @@ class Model{
     //put your code here
     protected $db;
     public function __construct() {
-    $this->db= new Database(DB_TYPE,DB_HOST,DB_NOME,DB_USER,DB_PASS);
+    $this->db=  ROOT . "config/bootstrap.php";
+    return $this->db;
 }
    
     

@@ -19,23 +19,14 @@ class alarmenccModel extends Model {
     }
 
     public function registrar($data) {
-       
-        $codigo = rand(Valor_Inicio, Valor_Final);
-
-        $this->db->Inserir("clientes", array(
-            'nome' => $data['nome'],
-            'telefone' => $data['telefone'],
-            'morada' => $data['morada'],
+        $this->db->Inserir("alarmes_ncc", array(
+            'criated' => $data['criated'],
+            'severity' => $data['severity'],
+            'device_service' => $data['device_service'],
             'data' => date("Y-m-d"),
-            'codigo' => $codigo,
-            'total' => $data['total'],
-            'descricao' => $data['descricao']
+            'id_usuario' => Session::get('id_usuario'),
+            'details' => $data['details'],
         ));
-    }
-
-    public function verifcar_cliente($tel) {
-
-        return $this->db->Selecionar('SELECT  * FROM clientes WHERE telefone=:telefone ', array(':telefone' => $tel));
     }
 
     public function verifcar_tel($tel) {
@@ -46,8 +37,8 @@ class alarmenccModel extends Model {
         return $em->fetch();
     }
 
-    public function listar_id($id) {
-        $em = $this->db->prepare("SELECT * FROM clientes WHERE id=:id");
+    public function verificar_id($id) {
+        $em = $this->db->prepare("SELECT * FROM alarmes_ncc WHERE id=:id");
 
         $em->execute(array(
             ':id' => $id,
@@ -72,7 +63,7 @@ class alarmenccModel extends Model {
 //fim
 
     public function listarAll() {
-        return $this->db->Selecionar('SELECT * FROM clientes ORDER BY id DESC');
+        return $this->db->Selecionar('SELECT * FROM alarmes_ncc ORDER BY id DESC');
     }
 
     public function listarContactos() {

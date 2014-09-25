@@ -15,11 +15,11 @@ class LoginController extends Controller {
 
     //put your code here
 
-    private $_login;
+    private $log;
 
     public function __construct() {
         parent::__construct();
-        $this->_login = $this->LoadModelo('login');
+        $this->log = $this->LoadModelo('usuario');
     }
 
     public function index() {
@@ -29,7 +29,7 @@ class LoginController extends Controller {
         $this->view->titulo = "Iniciar Sessão";
         if ($this->getInt('enviar') == 1) {
             $this->dados = $_POST;
-            if (!$this->getSqlverifica('nome')) {
+            if (!$this->getSqlverifica('login')) {
                 $this->view->erro = "POrfavor Introduza um nome Valido";
                 $this->view->renderizar("index");
                 exit;
@@ -40,26 +40,23 @@ class LoginController extends Controller {
                 exit;
             }
 
-            $data = array();
-            $data['senha'] = $this->getSqlverifica('senha');
-            $data['nome'] = $this->getSqlverifica('nome');
-            $linha = $this->_login->login($data);
-
+            $this->log->login = $this->getSqlverifica('login');
+            $this->log->senha =Hash::getHash('md5', $this->alphaNumeric('senha'), HASH_KEY);
+            $linha = $this->log->Autenticar($this->log);
             if (!$linha) {
                 $this->view->erro = "Usuario ou Palavra Passe Incorreta";
                 $this->view->renderizar("index");
                 exit;
             }
-            if ($linha['status'] != 'on') {
+            if ($linha->status != 'on') {
                 $this->view->erro = "Esse Usuario Não Esta Activo";
                 $this->view->renderizar("index");
                 exit;
             }
-
             Session::set("autenticado", true);
-            Session::set('nivel', $linha['nivel']);
-            Session::set('nome', $linha['nome']);
-            Session::set('id_usuario', $linha['id_usuario']);
+            Session::set('nivel', $linha->nivel);
+            Session::set('nome', $linha->nome);
+            Session::set('id_usuario', $linha->id);
             Session::set('time', time());
 
             if (Session::get('nivel') == "admin") {
@@ -68,6 +65,7 @@ class LoginController extends Controller {
                 $this->redirecionar();
             }
         }
+
 
         $this->view->renderizar("index");
     }

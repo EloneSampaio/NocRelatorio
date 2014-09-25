@@ -24,7 +24,7 @@ function open(){
             var id = $(this).attr('rel');
         console.log(id);
 	
-		var link="http://localhost/noc/"+id;
+		var link="http://localhost/noc"+id;
 		
 		// show a loader image
 		$('#loaderImage').show();

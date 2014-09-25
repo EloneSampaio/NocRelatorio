@@ -6,10 +6,16 @@
  * and open the template in the editor.
  */
 
+require './vendor/autoload.php';
+include 'config/config.php';
+include 'config/cli-config.php';
+require './config/autoload.php';
+require './config/bootstrap.php';
+
 try {
 
-    include 'config.php';
 
+   
     Session::iniciar();
 
     Bootstrap::run(new Request());

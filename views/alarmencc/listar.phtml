@@ -4,24 +4,22 @@
     <thead>
         <tr>
 
-            <th>Nome</th> 
-            <th>Morada</th>
-            <th>Contacto</th>
-            <th>Codigo</th>
-            <th>Total</th>
+            <th>criated</th> 
+            <th>severity</th>
+            <th>device_service</th>
 
         </tr>
     </thead>
 
     <tbody>
+      
         <?php if (isset($this->dados) && !empty($this->dados)): ?>
 
             <tr>
-                <td><?php print $this->dados['nome']; ?></td>
-                <td><?php print $this->dados['morada']; ?></td>
-                <td><?php print $this->dados['telefone']; ?></td>
-                <td><?php print $this->dados['codigo']; ?></td>
-                <td><?php print $this->dados['total']; ?></td>
+                <td><?php print $this->dados['criated']; ?></td>
+                <td><?php print $this->dados['severity']; ?></td>
+                <td><?php print $this->dados['device_service']; ?></td>
+
             </tr>
 
         <?php endif; ?>
@@ -39,7 +37,7 @@
             </div>
             <div class="block-content collapse in">
                 <div class="span12">
-                    <p><?php print $this->dados['descricao']; ?></p>
+                    <p><?php print $this->dados['details']; ?></p>
 
 
                 </div>

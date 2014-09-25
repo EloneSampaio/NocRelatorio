@@ -14,55 +14,81 @@
 class coyonet_hpasModel extends Model {
 
     //put your code here
-
     public function __construct() {
         parent::__construct();
     }
 
-    public function novo_comentario($data) {
-        $novo = $this->db->Inserir(
-                "tbl_comentarios", array(
-            'nome' => $data['nome'],
-            'msg' => $data['comentario'],
+    public function registrar($data) {
+        $this->db->Inserir("coyonet_hpas", array(
+            'status' => $data['status'],
+            'amp' => $data['amp'],
+            'power' => $data['power'],
             'data' => date("Y-m-d"),
-            'tbl_tutorial_id_tutorial' => 1
+            'id_usuario' => Session::get('id_usuario'),
+            'tube_temp' => $data['tube_temp'],
+            'obs' => $data['obs']
         ));
     }
 
-    public function listar_comentario() {
-        return $this->db->Selecionar('SELECT * FROM tbl_comentarios ORDER BY id_comentario DESC');
+    public function verifcar_tel($tel) {
+
+        $tel = implode(",", $tel);
+        $em = $this->db->prepare("SELECT telefone FROM coyonet_hpas WHERE telefone IN (" . $tel . ")");
+        $em->execute();
+        return $em->fetch();
     }
 
-    public function listarAll() {
-        return $this->db->Selecionar('SELECT * FROM pagamentos ORDER BY id DESC');
-    }
-
-    public function listar_id($id) {
-        return $this->db->Selecionar('SELECT  * FROM tbl_comentarios WHERE id_comentario=:id ', array(':id' => $id));
-    }
-
-    public function apagar_comentario($id) {
-        $this->db->apagar('tbl_comentarios', "id_comentario = '$id'");
-    }
-
-    public function editar_comentario($data) {
-
-        $data = array(
-            'nome' => $data['nome'],
-            'comentario' => $data['comentario']
-        );
-
-        $this->db->Actualizar('tbl_comentarios', $data, "`id_comentario`={$data['id']}");
-    }
-
-    public function verificar_comentario($comentario) {
-        $em = $this->db->prepare("SELECT id_comentario FROM tbl_comentarios WHERE nome=:nome");
+    public function verificar_id($id) {
+        $em = $this->db->prepare("SELECT * FROM coyonet_hpas WHERE id=:id");
 
         $em->execute(array(
-            ':nome' => $comentario,
+            ':id' => $id,
         ));
         return $em->fetch();
     }
 
+    public function verificar_codigo($codigo) {
+
+        $em = $this->db->prepare("SELECT * FROM coyonet_hpas WHERE codigo=:codigo");
+
+        $em->execute(array(
+            ':codigo' => $codigo,
+        ));
+        return $em->fetch();
+    }
+
+    public function verificar_nome() {
+        return $this->db->Selecionar('SELECT nome,telefone FROM coyonet_hpas');
+    }
+
 //fim
+
+    public function listarAll() {
+        return $this->db->Selecionar('SELECT * FROM coyonet_hpas ORDER BY id DESC');
+    }
+
+    public function listarContactos() {
+        return $this->db->Selecionar('SELECT telefone FROM coyonet_hpas');
+    }
+
+    public function listarUltimos() {
+        return $this->db->Selecionar('SELECT * FROM  coyonet_hpas ORDER BY  id DESC LIMIT 3');
+    }
+
+    public function apagar_cliente($id) {
+        $this->db->apagar('clientes', "id = '$id'");
+    }
+
+    public function editar_cliente($data, $id) {
+
+        $data = array(
+            'nome' => $data['nome'],
+            'telefone' => $data['telefone'],
+            'morada' => $data['morada'],
+            'total' => $data['total'],
+            'descricao' => $data['descricao']
+        );
+        $this->db->Actualizar('clientes', $data, "id={$id}");
+    }
+
 }

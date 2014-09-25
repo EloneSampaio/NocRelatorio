@@ -24,7 +24,7 @@ abstract class Controller {
     }
 
     protected function LoadModelo($modelo) {
-        $modelo = $modelo . "Model";
+
         $caminho = ROOT . "models" . DS . $modelo . ".php";
         if (is_readable($caminho)):
             require $caminho;
@@ -35,8 +35,8 @@ abstract class Controller {
         endif;
     }
 
-    protected function getBibliotecas($lib) {
-        $caminho = ROOT . "libs" . DS . $lib . ".php";
+    protected function getBibliotecas($folder, $lib) {
+        $caminho = ROOT . "vendor" . DS . $folder . DS . $lib . ".php";
         if (is_readable($caminho)):
             require $caminho;
         else:
@@ -58,7 +58,7 @@ abstract class Controller {
             return $_POST[$chave];
 
         endif;
-        
+
         return 0;
     }
 
@@ -134,11 +134,8 @@ abstract class Controller {
         throw new Exception('Erro ao inserir Rodape');
     }
 
-
-
-    
- public function getRelatorio($vista, $link = false) {
-        $rutaView = ROOT . "views" . DS . "relatorio" . DS .$vista. ".php";
+    public function getRelatorio($vista, $link = false) {
+        $rutaView = ROOT . "views" . DS . "relatorio" . DS . $vista . ".php";
 
         if ($link)
             $link = URL . $link . '/';
@@ -158,6 +155,9 @@ abstract class Controller {
         throw new Exception('Erro ao carregar contrato');
     }
 
+    public function getConfig() {
+        require ROOT . "config/bootstrap.php";
+    }
 
     abstract public function index();
 }
