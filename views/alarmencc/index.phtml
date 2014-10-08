@@ -22,39 +22,40 @@
                             <th>severity</th>
                             <th>device_service</th>
                             <th>Alterar</th>
-                            <!-- <th>Apagar</th> --->
-                            <th>Ver Usuario</th>
+                            <?php if (\application\Session::nivelViewRestrito(array('admin'))): ?>  <th>Apagar</th> <?php endif; ?> 
+
                         </tr>
                     </thead>
 
                     <tbody>
-                        <?php if (isset($this->clientes) && !empty($this->clientes)): ?>
-                            <?php foreach ($this->clientes as $dados): ?>
+                        <?php if (isset($this->alarmes) && !empty($this->alarmes)): ?>
+
+                            <?php
+                            foreach ($this->alarmes as $d):
+                                ?>
 
                                 <tr>
-                                    <td><?php print $dados['criated']; ?></td>
-                                    <td><?php print $dados['severity']; ?></td>
-                                    <td><?php print $dados['device_service']; ?></td>
-
-                                    <td><a rel="<?php print $dados['id']; ?>" href="<?php print URL . "alarmencc/editar/" . $dados['id']; ?>" id="altera"><i class="">Alterar</i></a></td>
-                                    <!---- <td><a rel="<?php  $dados['id']; ?>" href="<?php  URL . "alarmencc/apagar/" . $dados['id']; ?>" id="delete"><i class="">Apagar</i></a></td>  ---->
-                                    <td><a rel="<?php print $dados['id']; ?>" href="<?php print URL . "alarmencc/listar/" . $dados['id']; ?>" id="contrato"><i class="">Ver</i></a></td>
+                                    <td><?php print $d->getCriated(); ?></td>
+                                    <td><?php print $d->getSeverity(); ?></td>
+                                    <td><?php print $d->getDeviceService(); ?></td>
+                                    <td><a rel="<?php print $d->getId(); ?>" href="<?php print URL . "alarmencc/editar/" . $d->getId(); ?>" id="altera"><i class="">Alterar</i></a></td>
+                                    <?php if (\application\Session::nivelViewRestrito(array('admin'))): ?>   <td><a rel="<?php print $d->getId(); ?>" href="<?php print URL . "alarmencc/apagar/" . $d->getId(); ?>" id="delete"><i class="">Apagar</i></a></td>
+                                    <?php endif; ?>
                                 </tr>
                             <?php endforeach; ?>
 
                         </tbody>
                     </table>
                 <?php else: ?>
-                    <h2 class="text-center alert-error">Não existe nenhuma cliente cadastrado</h2>
+                    <h2 class="text-center alert-error">Não existe nenhuma Alarme cadastrado</h2>
                 <?php endif; ?>
 
-                <?php if (isset($this->paginacion) && !empty($this->paginacion) && (count($this->paginacion))) echo $this->paginacion; ?>
-
+                <?php if (isset($this->paginacao) && !empty($this->paginacao)) echo $this->paginacao; ?>
             </div>
         </div>
     </div>
     <!-- /block -->
 </div>
-</div>
-</div>
+
+
 <hr>

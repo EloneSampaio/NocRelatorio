@@ -15,20 +15,23 @@
                             <div class="control-group">
                                 <label class="control-label">turno<span class="required">*</span></label>
                                 <div class="controls">
-                                    <input type="text" name="turno" data-required="1" class="span6 m-wrap"/>
+                                    <select name="turno" class="span6 m-wrap">
+                                        <option value="Manhã">Manhã</option>
+                                        <option value="Tarde">Tarde</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label">inicio<span class="required">*</span></label>
                                 <div class="controls">
-                                    <input name="inicio" type="text" class="span6 m-wrap"/>
+                                    <input name="inicio" type="datetime-local" class="span6 m-wrap"/>
                                 </div>
                             </div>
 
                             <div class="control-group">
                                 <label class="control-label">fim<span class="required">*</span></label>
                                 <div class="controls">
-                                    <input name="fim" type="text" class="span6 m-wrap"/>
+                                    <input name="fim" type="datetime-local" class="span6 m-wrap"/>
                                 </div>
                             </div>
 

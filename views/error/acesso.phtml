@@ -1,4 +1,6 @@
+<?php
 
+use application\Session; ?>
 
 <!-- Header -->
 <div class="error">
@@ -42,7 +44,7 @@
                 <div class="span6 footer_menu">
                     <ul class="footer_menu">
                         <?php if (!Session::get("autenticado")): ?>
-                        <li>   <a href="<?php print URL . 'login'; ?>">Ir Para Pagina de Login</a></li>
+                            <li>   <a href="<?php print URL . 'login'; ?>">Ir Para Pagina de Login</a></li>
                         <?php endif; ?>    
                     </ul>
                 </div>

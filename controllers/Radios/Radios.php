@@ -1,17 +1,16 @@
 <?php
-
+namespace controllers;
 /**
  * Description of registrarController
  *
  * @author sam
  */
-class Servicos_logsController extends Controller {
+class Radios extends Controller {
 
-    
-    private $logs;
+    private $alarme;
 
     public function __construct() {
-        $this->logs = $this->LoadModelo('servicos_logs');
+        $this->alarme = $this->LoadModelo('alarmencc');
         parent::__construct();
     }
 
@@ -36,45 +35,33 @@ class Servicos_logsController extends Controller {
         $paginador = new Paginador();
 
         $this->view->titulo = "Clientes Cadastrado";
-        $this->view->clientes = $paginador->paginar($this->logs->listarAll(), $pagina);
-        $this->view->paginacion = $paginador->getView('paginacao', 'servicos_logs/index');
+        $this->view->clientes = $paginador->paginar($this->alarme->listarAll(), $pagina);
+        $this->view->paginacion = $paginador->getView('paginacao', 'alarmencc/index');
 
 
         if ($this->getInt('enviar') == 1) {
             $this->view->dados = $_POST;
 
 
-            if (!$this->getSqlverifica('servicos')) {
+            if (!$this->getSqlverifica('criated')) {
                 $this->view->erro = "Porfavor Introduza o primeiro nome do cliente ";
                 $this->view->renderizar("novo");
                 exit;
             }
 
-            if (!$this->getSqlverifica('inicio')) {
+            if (!$this->getSqlverifica('severity')) {
                 $this->view->erro = "Porfavor Introduza o segundo nome do cliente ";
                 $this->view->renderizar("novo");
                 exit;
             }
 
-            if (!$this->getSqlverifica('fim')) {
+            if (!$this->getSqlverifica('device_service')) {
                 $this->view->erro = "POrfavor Introduza um endereço ou morada  valido";
                 $this->view->renderizar("novo");
                 exit;
             }
 
-            if (!$this->getSqlverifica('intervencao_causa')) {
-                $this->view->erro = "POrfavor Introduza um endereço ou morada  valido";
-                $this->view->renderizar("novo");
-                exit;
-            }
-            
-            if (!$this->getSqlverifica('status')) {
-                $this->view->erro = "POrfavor Introduza um endereço ou morada  valido";
-                $this->view->renderizar("novo");
-                exit;
-            }
-            
-            if (!$this->getSqlverifica('obs')) {
+            if (!$this->getSqlverifica('details')) {
                 $this->view->erro = "POrfavor Introduza um endereço ou morada  valido";
                 $this->view->renderizar("novo");
                 exit;
@@ -83,14 +70,11 @@ class Servicos_logsController extends Controller {
 
 
             $data = array();
-            $data['servicos'] = $this->getSqlverifica('servicos');
-            $data['inicio'] = $this->getSqlverifica('inicio');
-            $data['fim'] = $this->getSqlverifica('fim');
-            $data['fim'] = $this->getSqlverifica('fim');
-            $data['status'] = $this->getSqlverifica('status');
-            $data['obs'] = $this->getSqlverifica('obs');
-            $data['intervencao_causa'] = $this->getSqlverifica('intervencao_causa');
-            if ($this->logs->registrar($data)) {
+            $data['criated'] = $this->getSqlverifica('criated');
+            $data['severity'] = $this->getSqlverifica('severity');
+            $data['device_service'] = $this->getSqlverifica('device_service');
+            $data['details'] = $this->getSqlverifica('details');
+            if ($this->alarme->registrar($data)) {
                 $this->view->erro = "erro ao criar alarme";
                 $this->view->renderizar("novo");
                 exit;
@@ -116,7 +100,7 @@ class Servicos_logsController extends Controller {
             $this->redirecionar("cliente");
         }
 
-        if (!$this->logs->listar_id($this->filtraInt($id))) {
+        if (!$this->alarme->listar_id($this->filtraInt($id))) {
             $this->redirecionar("cliente");
         }
 
@@ -159,11 +143,11 @@ class Servicos_logsController extends Controller {
             $data['descricao'] = $this->getSqlverifica('descricao');
             $data['total'] = $this->getInt('total');
 
-            $this->logs->editar_cliente($data, $this->filtraInt($id));
+            $this->alarme->editar_cliente($data, $this->filtraInt($id));
             $this->view->dados = $this->view->mensagem = "Alterado com Sucesso";
         }
 
-        $this->view->dados = $this->logs->listar_id($this->filtraInt($id));
+        $this->view->dados = $this->alarme->listar_id($this->filtraInt($id));
         $this->view->renderizar(
                 "editar");
     }
@@ -175,20 +159,19 @@ class Servicos_logsController extends Controller {
             $this->redirecionar("cliente");
         }
 
-        if (!$this->logs->listar_id($this->filtraInt($id))) {
+        if (!$this->alarme->listar_id($this->filtraInt($id))) {
             $this->redirecionar("cliente");
         }
-        $this->logs->apagar_cliente($this->filtraInt($id));
+        $this->alarme->apagar_cliente($this->filtraInt($id));
         $this->redirecionar("cliente");
     }
 
     public function listar($codigo) {
         if ($this->filtraInt($codigo)) {
-            $this->view->dados = $this->logs->verificar_id($this->filtraInt($codigo));
+            $this->view->dados = $this->alarme->verificar_id($this->filtraInt($codigo));
             $this->view->renderizar("listar");
         } else {
             $this->view->renderizar('novo');
         }
     }
-
 }

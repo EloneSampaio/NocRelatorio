@@ -5,7 +5,7 @@
 
     <ul class="pagination">
         <li>
-            <?php if ($this->_paginacion['primero']): ?>
+            <?php if (isset($this->_paginacion['primero'])): ?>
 
                 <a href="<?php echo $link . $this->_paginacion['primero']; ?>">&laquo;</a>
 
@@ -17,7 +17,7 @@
 
 
 
-            <?php if ($this->_paginacion['anterior']): ?>
+            <?php if (isset($this->_paginacion['anterior'])): ?>
 
                 <a href="<?php echo $link . $this->_paginacion['anterior']; ?>">&laquo;&laquo;</a>
 
@@ -28,7 +28,7 @@
             <?php endif; ?>
 
 
-
+            <?php if(isset($this->_paginacion['rango'])):?>
             <?php for ($i = 0; $i < count($this->_paginacion['rango']); $i++): ?>
 
                 <?php if ($this->_paginacion['actual'] == $this->_paginacion['rango'][$i]): ?>
@@ -44,11 +44,12 @@
                 <?php endif; ?>
 
             <?php endfor; ?>
+            <?php endif; ?>        
+            
 
 
 
-
-            <?php if ($this->_paginacion['siguiente']): ?>
+            <?php if (isset($this->_paginacion['siguiente'])): ?>
 
                 <a href="<?php echo $link . $this->_paginacion['siguiente']; ?>">&raquo;&raquo;</a>
 
@@ -60,7 +61,7 @@
 
 
 
-            <?php if ($this->_paginacion['ultimo']): ?>
+            <?php if (isset($this->_paginacion['ultimo'])): ?>
 
                 <a href="<?php echo $link . $this->_paginacion['ultimo']; ?>">&raquo;</a>
 

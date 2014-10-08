@@ -17,44 +17,40 @@
                 <table  class="table table-striped table-bordered">   
                     <thead>
                         <tr>
-
-                            <th>turno</th> 
-                            <th>inicio</th>
-                            <th>fim</th>
-                            <th>Alterar</th>
-                            <!-- <th>Apagar</th> --->
-                            <th>Ver Usuario</th>
+                            <th>Turno</th>
+                            <th>Inicio</th>
+                            <th>Fim</th>
+                            <th>Alterar</th>                            <th>Alterar</th>
+                            <?php if (\application\Session::nivelViewRestrito(array('admin'))): ?>  <th>Apagar</th> <?php endif; ?> 
                         </tr>
                     </thead>
 
                     <tbody>
-                        <?php if (isset($this->clientes) && !empty($this->clientes)): ?>
-                            <?php foreach ($this->clientes as $dados): ?>
+                        <?php if (isset($this->turno) && !empty($this->turno)): ?>
+                            <?php foreach ($this->turno as $dados): ?>
 
                                 <tr>
-                                    <td><?php print $dados['turno']; ?></td>
-                                    <td><?php print $dados['inicio']; ?></td>
-                                    <td><?php print $dados['fim']; ?></td>
+                                    <td><?php print $dados->getTurno(); ?></td>
+                                    <td><?php print $dados->getInicio(); ?></td>
+                                    <td><?php print $dados->getFim(); ?></td>
 
-                                    <td><a rel="<?php print $dados['id']; ?>" href="<?php print URL . "alarmencc/editar/" . $dados['id']; ?>" id="altera"><i class="">Alterar</i></a></td>
-                                    <!---- <td><a rel="<?php  $dados['id']; ?>" href="<?php  URL . "alarmencc/apagar/" . $dados['id']; ?>" id="delete"><i class="">Apagar</i></a></td>  ---->
-                                    <td><a rel="<?php print $dados['id']; ?>" href="<?php print URL . "alarmencc/listar/" . $dados['id']; ?>" id="contrato"><i class="">Ver</i></a></td>
+                                    <td><a rel="<?php print $dados->getId(); ?>" href="<?php print URL . "identificacao_turnos/editar/" . $dados->getId(); ?>" id="altera"><i class="">Alterar</i></a></td>
+                                    <td><a rel="<?php $dados->getId(); ?>" href="<?php print URL . "identificacao_turnos/apagar/" . $dados->getId(); ?>" id="delete"><i class="">Apagar</i></a></td> 
                                 </tr>
                             <?php endforeach; ?>
 
                         </tbody>
                     </table>
                 <?php else: ?>
-                    <h2 class="text-center alert-error">Não existe nenhuma cliente cadastrado</h2>
+                    <h2 class="text-center alert-error">Não existe nenhuma Alarme cadastrado</h2>
                 <?php endif; ?>
 
-                <?php if (isset($this->paginacion) && !empty($this->paginacion) && (count($this->paginacion))) echo $this->paginacion; ?>
-
+                <?php if (isset($this->paginacao) && !empty($this->paginacao)) echo $this->paginacao; ?>
             </div>
         </div>
     </div>
     <!-- /block -->
 </div>
-</div>
-</div>
+
+
 <hr>

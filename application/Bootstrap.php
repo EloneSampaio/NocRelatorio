@@ -1,9 +1,12 @@
 <?php
 
+namespace application;
+
 class Bootstrap {
 
     public static function run(Request $pedido) {
-        $controller = $pedido->getController() . "Controller";
+
+        $controller = ucfirst($pedido->getController());
         $caminho = ROOT . "controllers" . DS . $controller . DS . $controller . '.php';
 //        print $caminho;
 //        die;
@@ -11,10 +14,11 @@ class Bootstrap {
         $parametro = $pedido->getParametros();
 
         if (is_readable($caminho)) {
-            require $caminho;
 
+            require $caminho;
             $controlador = ucfirst($controller);
-            $controller = new $controlador;
+            $namespace = "\\" . "controllers" . "\\" . $controlador;
+            $controller = new $namespace;
 
             if (is_callable(array($controller, $metodo))) {
 

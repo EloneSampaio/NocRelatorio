@@ -1,5 +1,7 @@
 <?php
 
+namespace application;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -22,14 +24,16 @@ class View {
     function __construct(Request $pedido) {
         //parent::__construct();
         $this->_controller = $pedido->getController();
+//        print $this->_controller; exit;
         $this->_js = array();
         $this->_css = array();
     }
 
     public function renderizar($nome, $item = FALSE) {
 
+       
         if (Session::get('autenticado')) {
-          
+
 
             $menu[] = array(
                 "id" => "alarmencc",
@@ -68,8 +72,8 @@ class View {
                 "titulo" => "ZAP FILMES",
                 "link" => URL . "zap_filmes"
             );
-            
-              $menu[] = array(
+
+            $menu[] = array(
                 "id" => "login/logof",
                 "titulo" => "Encerrar ",
                 "link" => URL . "login/logof"
@@ -78,7 +82,7 @@ class View {
             $menu[] = array(
                 "id" => "login",
                 "titulo" => "Inciar Sessão",
-                "link" => URL."login"
+                "link" => URL . "login"
             );
         }
 

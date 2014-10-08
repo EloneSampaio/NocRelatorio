@@ -1,5 +1,8 @@
 <?php
 
+namespace application;
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -28,7 +31,11 @@ abstract class Controller {
         $caminho = ROOT . "models" . DS . $modelo . ".php";
         if (is_readable($caminho)):
             require $caminho;
+            $modelo="\\"."models"."\\".$modelo;    
             $modelo = new $modelo;
+            /*
+             *return \models\$modelo 
+             */
             return $modelo;
         else :
             throw new Exception("Erro No Modelo");

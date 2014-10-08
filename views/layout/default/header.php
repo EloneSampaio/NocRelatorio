@@ -1,3 +1,4 @@
+<?php use application\Session;?>
 <html lang="pt">
 
     <head>

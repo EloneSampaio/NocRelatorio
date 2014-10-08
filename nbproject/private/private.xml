@@ -3,15 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/html/noc/models/login.php</file>
-            <file>file:/var/www/html/noc/models/alarmenccModel.php</file>
-            <file>file:/var/www/html/noc/controllers/usuarioController/usuarioController.php</file>
+            <file>file:/var/www/html/noc/views/alarmencc/editar.phtml</file>
+            <file>file:/var/www/html/noc/views/identificacao_turnos/editar.phtml</file>
             <file>file:/var/www/html/noc/views/identificacao_turnos/novo.phtml</file>
-            <file>file:/var/www/html/noc/views/alarmencc/index.phtml</file>
             <file>file:/var/www/html/noc/views/identificacao_turnos/index.phtml</file>
-            <file>file:/var/www/html/noc/views/alarmencc/novo.phtml</file>
-            <file>file:/var/www/html/noc/models/identificacao_turnosModel.php</file>
-            <file>file:/var/www/html/noc/controllers/identificacao_turnosController/identificacao_turnosController.php</file>
+            <file>file:/var/www/html/noc/models/IdentificacaoTurnos.php</file>
+            <file>file:/var/www/html/noc/config/config.php</file>
+            <file>file:/var/www/html/noc/controllers/Identificacao_turnos/Identificacao_turnos.php</file>
         </group>
     </open-files>
 </project-private>

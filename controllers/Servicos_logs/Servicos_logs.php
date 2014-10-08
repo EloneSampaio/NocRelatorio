@@ -1,17 +1,17 @@
 <?php
-
+namespace controllers;
 /**
  * Description of registrarController
  *
  * @author sam
  */
-class Identificacao_turnosController extends Controller {
+class Servicos_logs extends Controller {
 
-   
-    private $turno;
+    
+    private $logs;
 
     public function __construct() {
-        $this->turno = $this->LoadModelo('identificacao_turnos');
+        $this->logs = $this->LoadModelo('servicos_logs');
         parent::__construct();
     }
 
@@ -36,15 +36,15 @@ class Identificacao_turnosController extends Controller {
         $paginador = new Paginador();
 
         $this->view->titulo = "Clientes Cadastrado";
-        $this->view->clientes = $paginador->paginar($this->turno->listarAll(), $pagina);
-        $this->view->paginacion = $paginador->getView('paginacao', 'identificacao_turnos/index');
+        $this->view->clientes = $paginador->paginar($this->logs->listarAll(), $pagina);
+        $this->view->paginacion = $paginador->getView('paginacao', 'servicos_logs/index');
 
 
         if ($this->getInt('enviar') == 1) {
             $this->view->dados = $_POST;
 
 
-            if (!$this->getSqlverifica('turno')) {
+            if (!$this->getSqlverifica('servicos')) {
                 $this->view->erro = "Porfavor Introduza o primeiro nome do cliente ";
                 $this->view->renderizar("novo");
                 exit;
@@ -62,6 +62,18 @@ class Identificacao_turnosController extends Controller {
                 exit;
             }
 
+            if (!$this->getSqlverifica('intervencao_causa')) {
+                $this->view->erro = "POrfavor Introduza um endereço ou morada  valido";
+                $this->view->renderizar("novo");
+                exit;
+            }
+            
+            if (!$this->getSqlverifica('status')) {
+                $this->view->erro = "POrfavor Introduza um endereço ou morada  valido";
+                $this->view->renderizar("novo");
+                exit;
+            }
+            
             if (!$this->getSqlverifica('obs')) {
                 $this->view->erro = "POrfavor Introduza um endereço ou morada  valido";
                 $this->view->renderizar("novo");
@@ -71,11 +83,14 @@ class Identificacao_turnosController extends Controller {
 
 
             $data = array();
-            $data['turno'] = $this->getSqlverifica('turno');
+            $data['servicos'] = $this->getSqlverifica('servicos');
             $data['inicio'] = $this->getSqlverifica('inicio');
             $data['fim'] = $this->getSqlverifica('fim');
+            $data['fim'] = $this->getSqlverifica('fim');
+            $data['status'] = $this->getSqlverifica('status');
             $data['obs'] = $this->getSqlverifica('obs');
-            if ($this->turno->registrar($data)) {
+            $data['intervencao_causa'] = $this->getSqlverifica('intervencao_causa');
+            if ($this->logs->registrar($data)) {
                 $this->view->erro = "erro ao criar alarme";
                 $this->view->renderizar("novo");
                 exit;
@@ -101,7 +116,7 @@ class Identificacao_turnosController extends Controller {
             $this->redirecionar("cliente");
         }
 
-        if (!$this->turno->listar_id($this->filtraInt($id))) {
+        if (!$this->logs->listar_id($this->filtraInt($id))) {
             $this->redirecionar("cliente");
         }
 
@@ -144,11 +159,11 @@ class Identificacao_turnosController extends Controller {
             $data['descricao'] = $this->getSqlverifica('descricao');
             $data['total'] = $this->getInt('total');
 
-            $this->turno->editar_cliente($data, $this->filtraInt($id));
+            $this->logs->editar_cliente($data, $this->filtraInt($id));
             $this->view->dados = $this->view->mensagem = "Alterado com Sucesso";
         }
 
-        $this->view->dados = $this->turno->listar_id($this->filtraInt($id));
+        $this->view->dados = $this->logs->listar_id($this->filtraInt($id));
         $this->view->renderizar(
                 "editar");
     }
@@ -160,19 +175,20 @@ class Identificacao_turnosController extends Controller {
             $this->redirecionar("cliente");
         }
 
-        if (!$this->turno->listar_id($this->filtraInt($id))) {
+        if (!$this->logs->listar_id($this->filtraInt($id))) {
             $this->redirecionar("cliente");
         }
-        $this->turno->apagar_cliente($this->filtraInt($id));
+        $this->logs->apagar_cliente($this->filtraInt($id));
         $this->redirecionar("cliente");
     }
 
     public function listar($codigo) {
         if ($this->filtraInt($codigo)) {
-            $this->view->dados = $this->turno->verificar_id($this->filtraInt($codigo));
+            $this->view->dados = $this->logs->verificar_id($this->filtraInt($codigo));
             $this->view->renderizar("listar");
         } else {
             $this->view->renderizar('novo');
         }
     }
+
 }

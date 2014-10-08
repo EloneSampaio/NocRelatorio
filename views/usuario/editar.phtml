@@ -13,13 +13,13 @@
                             <div class="control-group">
                                 <label class="control-label">Nome<span class="required">*</span></label>
                                 <div class="controls">
-                                    <input name="nome" type="text" class="span6 m-wrap" value="<?php if (isset($this->dados)) print $this->dados->nome; ?>"/>
+                                    <input name="nome" type="text" class="span6 m-wrap" value="<?php if (isset($this->dados)) print $this->dados->getNome(); ?>"/>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label">Login<span class="required">*</span></label>
                                 <div class="controls">
-                                    <input name="login" type="text" class="span6 m-wrap" value="<?php if (isset($this->dados)) print $this->dados->login; ?>"/>
+                                    <input name="login" type="text" class="span6 m-wrap" value="<?php if (isset($this->dados)) print $this->dados->getlogin(); ?>"/>
 
                                 </div>
                             </div>
@@ -35,7 +35,7 @@
                             <div class="control-group">
                                 <label class="control-label">Senha<span class="required">*</span></label>
                                 <div class="controls">
-                                    <input name="senha" type="password"  class="span6 m-wrap" class="senha" disabled="" value="<?php if (isset($this->dados)) print $this->dados->nivel; ?>"/>
+                                    <input name="senha" type="password"  class="span6 m-wrap" class="senha" disabled="" value="<?php if (isset($this->dados)) print $this->dados->getNivel(); ?>"/>
                                 </div>
                             </div>
                             <div class="control-group">

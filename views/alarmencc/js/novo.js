@@ -52,11 +52,12 @@ function apagar() {
 
 // get the id
             var id = $(this).attr('rel');
+             console.log(id);
             // trigger the delete file
             $.post("http://localhost/noc/alarmencc/apagar/", {'id': id})
                     .done(function(data) {
                         alert("cliente apagado");
-                        console.log(data);
+                        console.log(id);
                     });
         }
         else{

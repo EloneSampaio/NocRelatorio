@@ -1,4 +1,4 @@
-
+<?php use application\Session; ?>
 <!-- /block -->
 
 <div class="row-fluid">
@@ -38,9 +38,9 @@
                 </div>
             </div>
             <!-- /block -->
-              <?php endif; ?>
-        </div>
-  
+        <?php endif; ?>
+    </div>
+
 
     <div class="span6">
         <!-- block -->
@@ -62,9 +62,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                       
-                        <?php //print_r($this->pagamentos); exit;
-                        foreach ($this->pagamentos as $u): ?>
+
+                        <?php
+                        //print_r($this->pagamentos); exit;
+                        foreach ($this->pagamentos as $u):
+                            ?>
                             <tr>
                                 <td><?php print $u['id'] ?></td>
                                 <td><?php print $u['mes']; ?></td>
@@ -72,7 +74,7 @@
                                 <td><?php print $u['nome']; ?></td>
                             </tr>
 
-                        <?php endforeach; ?>
+<?php endforeach; ?>
 
                     </tbody>
                 </table>
@@ -101,7 +103,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($this->clientes as $u): ?>
+<?php foreach ($this->clientes as $u): ?>
                                 <tr>
                                     <td><?php print $u['id'] ?></td>
                                     <td><?php print $u['nome']; ?></td>
@@ -109,7 +111,7 @@
                                     <td><?php print $u['morada']; ?></td>
                                 </tr>
 
-                            <?php endforeach; ?>
+<?php endforeach; ?>
 
                         </tbody>
                     </table>

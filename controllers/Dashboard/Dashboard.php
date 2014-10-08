@@ -1,5 +1,10 @@
 <?php
 
+namespace controllers;
+
+use application\Controller;
+use application\Session;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,7 +16,7 @@
  *
  * @author sam
  */
-class DashboardController extends Controller {
+class Dashboard extends Controller {
 
     //put your code here
     private $dashboards;
@@ -21,14 +26,14 @@ class DashboardController extends Controller {
     public function __construct() {
         parent::__construct();
 
-        $this->dashboards = $this->LoadModelo("usuario");
+        $this->dashboards = $this->LoadModelo("Usuarios");
         //$this->clientes = $this->LoadModelo("cliente");
         //$this->pagamentos = $this->LoadModelo("pagamento");
     }
 
     public function index() {
         $this->view->setJs(array("novo"));
-        Session::nivelRestrito(array("usuario","admin"));
+        Session::nivelRestrito(array("usuario", "admin"));
         $this->view->footer = $this->getFooter('footer', 'index');
         //$this->view->t = $this->dashboards->listarUltimos();
         $this->view->titulo = "Pagina de Administracção";
@@ -40,7 +45,7 @@ class DashboardController extends Controller {
         //$this->view->usuarios = $this->dashboards->listarUltimos();
         //$this->view->clientes = $this->clientes->listarUltimos();
         //$this->view->pagamentos = $this->pagamentos->listarUltimos();
-        
+
         $this->view->renderizar('st');
     }
 

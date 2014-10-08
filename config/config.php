@@ -5,8 +5,6 @@
 //error_reporting(E_ALL);
 //ini_set("display_errors", 0);
 
-
-
 define("URL", "http://localhost/noc/");
 
 //define a pasta layout com a pagina padrão de layout
@@ -28,11 +26,5 @@ define("APP_PATH",  "application" . DS);
 define("DEFAULT_ERRO", "errorController");
 define("DEFAULT_CONTROLLER", "index");
 
-define("DB_TYPE","mysql");
-define("DB_HOST","localhost");
-define("DB_NOME","NOC");
-define("DB_USER","root");
-define("DB_PASS","elone");
-define("DB_CHAR","UTF8");
 
 

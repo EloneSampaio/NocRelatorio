@@ -27,11 +27,11 @@
                             <?php foreach ($this->usuarios as $dados): ?>
 
                                 <tr>
-                                    <td><?php print $dados->nome; ?></td>
-                                    <td><?php print $dados->login; ?></td>
-                                    <td><?php print $dados->nivel; ?></td>
-                                    <td><a rel="<?php print $dados->id; ?>" href="<?php print URL . "usuario/editar/" . $dados->id; ?>" id="altera"><i class="">Alterar</i></a></td>
-                                    <td><a rel="<?php print $dados->id; ?>" href="<?php print URL . "usuario/apagar/" . $dados->id; ?>" id="delete"><i class="">Apagar</i></a></td>
+                                    <td><?php print $dados->getNome(); ?></td>
+                                    <td><?php print $dados->getLogin(); ?></td>
+                                    <td><?php print $dados->getNivel(); ?></td>
+                                    <td><a rel="<?php print $dados->getId(); ?>" href="<?php print URL . "usuario/editar/" . $dados->getId(); ?>" id="altera"><i class="">Alterar</i></a></td>
+                                    <td><a rel="<?php print $dados->getId(); ?>" href="<?php print URL . "usuario/apagar/" . $dados->getId(); ?>" id="delete"><i class="">Apagar</i></a></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

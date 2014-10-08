@@ -1,5 +1,7 @@
 <?php
 
+namespace vendor\paginador;
+
 /*
  * + --------------------------------------------------------- +
  * |  Software:	Paginador - clase PHP para paginar registros   |
@@ -41,31 +43,35 @@ class Paginador {
         $registros = count($query);
 
         $total = ceil($registros / $limite);
-        $this->_datos = array_slice($query, $inicio, $limite);
-        $paginacion = array();
-        $paginacion['actual'] = $pagina;
-        $paginacion['total'] = $total;
+        if (!empty($query)) {
+            $this->_datos = array_slice($query, $inicio, $limite);
+            $paginacion = array();
+            $paginacion['actual'] = $pagina;
+            $paginacion['total'] = $total;
 
-        if ($pagina > 1) {
-            $paginacion['primero'] = 1;
-            $paginacion['anterior'] = $pagina - 1;
+            if ($pagina > 1) {
+                $paginacion['primero'] = 1;
+                $paginacion['anterior'] = $pagina - 1;
+            } else {
+                $paginacion['primero'] = '';
+                $paginacion['anterior'] = '';
+            }
+
+            if ($pagina < $total) {
+                $paginacion['ultimo'] = $total;
+                $paginacion['siguiente'] = $pagina + 1;
+            } else {
+                $paginacion['ultimo'] = '';
+                $paginacion['siguiente'] = '';
+            }
+
+            $this->_paginacion = $paginacion;
+            $this->_rangoPaginacion($paginacion);
+
+            return $this->_datos;
         } else {
-            $paginacion['primero'] = '';
-            $paginacion['anterior'] = '';
+            return FALSE;
         }
-
-        if ($pagina < $total) {
-            $paginacion['ultimo'] = $total;
-            $paginacion['siguiente'] = $pagina + 1;
-        } else {
-            $paginacion['ultimo'] = '';
-            $paginacion['siguiente'] = '';
-        }
-
-        $this->_paginacion = $paginacion;
-        $this->_rangoPaginacion($paginacion);
-
-        return $this->_datos;
     }
 
     private function _rangoPaginacion($limite = false) {

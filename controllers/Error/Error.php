@@ -1,7 +1,8 @@
 <?php
-
-
-class ErrorController extends Controller{
+namespace controllers;
+use application\Controller;
+use application\Session;
+class Error extends Controller{
     
     
     public function __construct() {

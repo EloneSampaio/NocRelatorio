@@ -1,5 +1,10 @@
 <?php
 
+namespace controllers;
+
+use application\Controller;
+use application\Session;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,12 +16,12 @@
  *
  * @author sam
  */
-class Coyonet_hpasController extends Controller {
+class Coyonet_hpas extends Controller {
 
     private $coyonet;
 
     public function __construct() {
-        $this->coyonet = $this->LoadModelo('coyonet_hpas');
+        $this->coyonet = $this->LoadModelo('CoyonetHpas');
         parent::__construct();
     }
 
@@ -25,7 +30,7 @@ class Coyonet_hpasController extends Controller {
         /*
          * @var
          */
-        $this->view->setJs(array("novo"));
+        //$this->view->setJs(array("novo"));
         if (!$this->filtraInt($pagina)) {
             $pagina = false;
         } else {
@@ -35,14 +40,11 @@ class Coyonet_hpasController extends Controller {
         if (!Session::get('autenticado')) {
             $this->redirecionar();
         }
+        $paginador = new \vendor\paginador\Paginador();
 
-
-        $this->getBibliotecas('paginador', 'paginador');
-        $paginador = new Paginador();
-
-        $this->view->titulo = "Clientes Cadastrado";
-        $this->view->clientes = $paginador->paginar($this->coyonet->listarAll(), $pagina);
-        $this->view->paginacion = $paginador->getView('paginacao', 'coyonet_hpas/index');
+        $this->view->titulo = "Coyonete ";
+        $this->view->coyonet = $paginador->paginar($this->coyonet->listaAll(), $pagina, 5);
+        $this->view->paginacao = $paginador->getView('paginacao', 'alarmencc/index');
 
 
         if ($this->getInt('enviar') == 1) {
@@ -72,22 +74,21 @@ class Coyonet_hpasController extends Controller {
                 $this->view->renderizar("novo");
                 exit;
             }
-            
+
             if (!$this->getSqlverifica('obs')) {
                 $this->view->erro = "POrfavor Introduza um endereço ou morada  valido";
                 $this->view->renderizar("novo");
                 exit;
             }
+            $this->coyonet->setStatus($this->getSqlverifica('status'));
+            $this->coyonet->setAmp($this->getSqlverifica('amp'));
+            $this->coyonet->setPower($this->getSqlverifica('power'));
+            $this->coyonet->setTubetemp($this->getSqlverifica('tube_temp'));
+            $this->coyonet->setObs($this->getSqlverifica('obs'));
+            $this->coyonet->setData(date("Y-m-d"));
+            $this->coyonet->setIdUsuario(Session::get('id'));
 
-
-
-            $data = array();
-            $data['status'] = $this->getSqlverifica('status');
-            $data['amp'] = $this->getSqlverifica('amp');
-            $data['power'] = $this->getSqlverifica('power');
-            $data['tube_temp'] = $this->getSqlverifica('tube_temp');
-            $data['obs'] = $this->getSqlverifica('obs');
-            if ($this->coyonet->registrar($data)) {
+            if (!$this->coyonet->Insert($this->coyonet)) {
                 $this->view->erro = "erro ao criar alarme";
                 $this->view->renderizar("novo");
                 exit;
@@ -104,89 +105,84 @@ class Coyonet_hpasController extends Controller {
         $this->view->setJs(array("novo"));
         $this->view->setCss(array("style"));
         $this->view->footer = $this->getFooter('footer', 'index');
-        $this->view->renderizar('novo');
+        $this->view->renderizar('novo'
+        );
     }
 
     public function editar($id) {
         Session::nivelRestrito(array("admin"));
         if (!$this->filtraInt($id)) {
-            $this->redirecionar("cliente");
+            $this->redirecionar("coyonet_hpas");
         }
-
-        if (!$this->coyonet->listar_id($this->filtraInt($id))) {
-            $this->redirecionar("cliente");
-        }
+        $this->view->dados = $this->coyonet->listarId($this->filtraInt($id));
 
 
-        $this->view->titulo = "Editar Cliente";
+        $this->view->titulo = "Editar Alarme";
         $this->view->setJs(array("novo"));
 
-        if ($this->getInt('envia') == 1) {
+        if ($this->getInt('enviar') == 1) {
+            $this->view->dados = $_POST;
 
 
-            if (!$this->getSqlverifica('nome')) {
-                $this->view->erro = "Porfavor Introduza um nome do cliente valido";
+            if (!$this->getSqlverifica('status')) {
+                $this->view->erro = "Porfavor Introduza o primeiro nome do cliente ";
                 $this->view->renderizar("novo");
                 exit;
             }
 
-            if (!$this->getSqlverifica('morada')) {
+            if (!$this->getSqlverifica('amp')) {
+                $this->view->erro = "Porfavor Introduza o segundo nome do cliente ";
+                $this->view->renderizar("novo");
+                exit;
+            }
+
+            if (!$this->getSqlverifica('power')) {
                 $this->view->erro = "POrfavor Introduza um endereço ou morada  valido";
                 $this->view->renderizar("novo");
                 exit;
             }
 
-            if (!$this->getInt('total')) {
-                $this->view->erro = "POrfavor Introduza um valor  valido";
+            if (!$this->getSqlverifica('tube_temp')) {
+                $this->view->erro = "POrfavor Introduza um endereço ou morada  valido";
                 $this->view->renderizar("novo");
                 exit;
             }
 
-
-            if (!$this->getSqlverifica('descricao')) {
-                $this->view->erro = "Porfavor Introduza uma descrição valida";
+            if (!$this->getSqlverifica('obs')) {
+                $this->view->erro = "POrfavor Introduza um endereço ou morada  valido";
                 $this->view->renderizar("novo");
                 exit;
             }
+            $this->coyonet->setStatus($this->getSqlverifica('status'));
+            $this->coyonet->setAmp($this->getSqlverifica('amp'));
+            $this->coyonet->setPower($this->getSqlverifica('power'));
+            $this->coyonet->setTubetemp($this->getSqlverifica('tube_temp'));
+            $this->coyonet->setObs($this->getSqlverifica('obs'));
 
-            $data = array();
-            $data['telefone'] = $this->getInt('telefone');
-            $data['morada'] = $this->getSqlverifica('morada');
-            $data['nome'] = $this->getSqlverifica('nome');
-            $data['descricao'] = $this->getSqlverifica('descricao');
-            $data['total'] = $this->getInt('total');
-
-            $this->coyonet->editar_cliente($data, $this->filtraInt($id));
-            $this->view->dados = $this->view->mensagem = "Alterado com Sucesso";
+            $id = $this->view->dados->getId();
+            if ($this->coyonet->Update($this->coyonet, $id)) {
+                $this->view->erro = "Erro ao alterar dados ";
+                $this->view->renderizar("editar");
+                exit;
+            }
+            $this->view->mensagem = "Alteração feita com sucesso";
         }
 
-        $this->view->dados = $this->coyonet->listar_id($this->filtraInt($id));
-        $this->view->renderizar(
-                "editar");
+        $this->view->renderizar("editar");
     }
 
     public function apagar($id) {
 
         Session::nivelRestrito(array("admin"));
+
         if (!$this->filtraInt($id)) {
-            $this->redirecionar("cliente");
+            $this->redirecionar("coyonet_hpas");
         }
-
-        if (!$this->coyonet->listar_id($this->filtraInt($id))) {
-            $this->redirecionar("cliente");
+        if (!$this->coyonet->listarId($this->filtraInt($id))) {
+            $this->redirecionar("coyonet_hpas");
         }
-        $this->coyonet->apagar_cliente($this->filtraInt($id));
-        $this->redirecionar("cliente");
+        $this->coyonet->Delete($id);
+        $this->redirecionar("coyonet_hpas");
     }
 
-    public function listar($codigo) {
-        if ($this->filtraInt($codigo)) {
-            $this->view->dados = $this->coyonet->verificar_id($this->filtraInt($codigo));
-            $this->view->renderizar("listar");
-        } else {
-            $this->view->renderizar('novo');
-        }
-    }
-    
 }
-    

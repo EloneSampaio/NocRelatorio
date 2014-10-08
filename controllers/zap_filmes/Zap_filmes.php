@@ -1,24 +1,23 @@
 <?php
-
+namespace controllers;
 /**
  * Description of registrarController
  *
  * @author sam
  */
-class RadiosController extends Controller {
+class Zap_filmes extends Controller {
 
-    private $alarme;
+    //put your code here
+
+    private $cliente;
 
     public function __construct() {
-        $this->alarme = $this->LoadModelo('alarmencc');
+        $this->cliente = $this->LoadModelo('zap_filmes');
         parent::__construct();
     }
 
     public function index($pagina = FALSE) {
 
-        /*
-         * @var
-         */
         $this->view->setJs(array("novo"));
         if (!$this->filtraInt($pagina)) {
             $pagina = false;
@@ -31,58 +30,89 @@ class RadiosController extends Controller {
         }
 
 
-        $this->getBibliotecas('paginador', 'paginador');
+       $this->getBibliotecas('paginador','paginador');
         $paginador = new Paginador();
 
         $this->view->titulo = "Clientes Cadastrado";
-        $this->view->clientes = $paginador->paginar($this->alarme->listarAll(), $pagina);
-        $this->view->paginacion = $paginador->getView('paginacao', 'alarmencc/index');
+        $this->view->clientes = $paginador->paginar($this->cliente->listarAll(), $pagina);
+        $this->view->paginacion = $paginador->getView('paginacao', 'cliente/index');
 
 
         if ($this->getInt('enviar') == 1) {
             $this->view->dados = $_POST;
 
 
-            if (!$this->getSqlverifica('criated')) {
+            if (!$this->getSqlverifica('p_nome')) {
                 $this->view->erro = "Porfavor Introduza o primeiro nome do cliente ";
                 $this->view->renderizar("novo");
                 exit;
             }
 
-            if (!$this->getSqlverifica('severity')) {
+            if (!$this->getSqlverifica('u_nome')) {
                 $this->view->erro = "Porfavor Introduza o segundo nome do cliente ";
                 $this->view->renderizar("novo");
                 exit;
             }
 
-            if (!$this->getSqlverifica('device_service')) {
+            if (!$this->getSqlverifica('morada')) {
                 $this->view->erro = "POrfavor Introduza um endereço ou morada  valido";
                 $this->view->renderizar("novo");
                 exit;
             }
 
-            if (!$this->getSqlverifica('details')) {
-                $this->view->erro = "POrfavor Introduza um endereço ou morada  valido";
+            if (!$this->getInt('telefone')) {
+                $this->view->erro = "POrfavor Introduza um contacto  valido";
+                $this->view->renderizar("novo");
+                exit;
+            }
+
+            if (!$this->getInt('total')) {
+                $this->view->erro = "POrfavor Introduza um valor  valido";
                 $this->view->renderizar("novo");
                 exit;
             }
 
 
+            if (!$this->getSqlverifica('descricao')) {
+                $this->view->erro = "Porfavor Introduza uma descrição valida";
+                $this->view->renderizar("novo");
+                exit;
+            }
 
             $data = array();
-            $data['criated'] = $this->getSqlverifica('criated');
-            $data['severity'] = $this->getSqlverifica('severity');
-            $data['device_service'] = $this->getSqlverifica('device_service');
-            $data['details'] = $this->getSqlverifica('details');
-            if ($this->alarme->registrar($data)) {
-                $this->view->erro = "erro ao criar alarme";
-                $this->view->renderizar("novo");
+            $data['p_nome'] = $this->getSqlverifica('p_nome');
+            $data['descricao'] = $this->getSqlverifica('descricao');
+            $data['u_nome'] = $this->getSqlverifica('u_nome');
+            $data['telefone'] = $this->getInt('telefone');
+            $data['total'] = $this->getInt('total');
+            $data['morada'] = $this->getSqlverifica('morada');
+            $data['nome'] = $data['p_nome'] . " " . $data['u_nome'];
+
+
+            $cliente = $this->cliente->verifcar_cliente($this->filtraInt($_POST['telefone']));
+            if ($cliente) {
+                $this->view->mensagem = "A conta que pretende criar já Existe !";
+                $this->view->renderizar("index");
                 exit;
             }
 
-            $this->view->dados = FALSE;
-            $this->view->mensagem = "A sua conta foi criada com Sucesso";
+            if ($this->cliente->registrar($data)) {
+
+                $this->view->dados = FALSE;
+                $this->view->mensagem = "A sua conta foi criada com Sucesso";
+                $mensagem = "Novo Contrato Efectuado. Cliente:" . $c['nome'] . "Data:" . "Criado por:" . Session::get('nome') . date('Y-m-d H:i:s');
+                //Enviar a mensagem para cliente
+                Sms::SendSMS("127.0.0.1", 8800, "", "", TELEFONE, $mensagem);
+            }
+
+            if (!$this->cliente->verifcar_cliente($this->getInt('telefone'))) {
+                $this->view->erro = "Não Possivel criar sua conta tenta mais tarde";
+                $this->view->renderizar("novo");
+                exit;
+            }
         }
+
+        //só se activa se o javascript estiver desabilitado 
         $this->view->renderizar("index");
     }
 
@@ -100,7 +130,7 @@ class RadiosController extends Controller {
             $this->redirecionar("cliente");
         }
 
-        if (!$this->alarme->listar_id($this->filtraInt($id))) {
+        if (!$this->cliente->listar_id($this->filtraInt($id))) {
             $this->redirecionar("cliente");
         }
 
@@ -143,11 +173,11 @@ class RadiosController extends Controller {
             $data['descricao'] = $this->getSqlverifica('descricao');
             $data['total'] = $this->getInt('total');
 
-            $this->alarme->editar_cliente($data, $this->filtraInt($id));
+            $this->cliente->editar_cliente($data, $this->filtraInt($id));
             $this->view->dados = $this->view->mensagem = "Alterado com Sucesso";
         }
 
-        $this->view->dados = $this->alarme->listar_id($this->filtraInt($id));
+        $this->view->dados = $this->cliente->listar_id($this->filtraInt($id));
         $this->view->renderizar(
                 "editar");
     }
@@ -159,19 +189,20 @@ class RadiosController extends Controller {
             $this->redirecionar("cliente");
         }
 
-        if (!$this->alarme->listar_id($this->filtraInt($id))) {
+        if (!$this->cliente->listar_id($this->filtraInt($id))) {
             $this->redirecionar("cliente");
         }
-        $this->alarme->apagar_cliente($this->filtraInt($id));
+        $this->cliente->apagar_cliente($this->filtraInt($id));
         $this->redirecionar("cliente");
     }
 
     public function listar($codigo) {
         if ($this->filtraInt($codigo)) {
-            $this->view->dados = $this->alarme->verificar_id($this->filtraInt($codigo));
+            $this->view->dados = $this->cliente->verificar_codigo($this->filtraInt($codigo));
             $this->view->renderizar("listar");
         } else {
             $this->view->renderizar('novo');
         }
     }
+
 }

@@ -6,18 +6,19 @@
  * and open the template in the editor.
  */
 
+use application\Session;
+use application\Bootstrap;
+use application\Request;
+
 require './vendor/autoload.php';
-include 'config/config.php';
-include 'config/cli-config.php';
+require 'config/config.php';
+require 'config/cli-config.php';
 require './config/autoload.php';
-require './config/bootstrap.php';
+//require './config/bootstrap.php';
+
 
 try {
-
-
-   
     Session::iniciar();
-
     Bootstrap::run(new Request());
 } catch (Exception $ex) {
     echo $ex->getMessage();
